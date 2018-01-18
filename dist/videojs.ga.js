@@ -6,14 +6,14 @@
 (function() {
   var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
-  videojs.plugin('ga', function(options) {
+  videojs.registerPlugin('ga', function(options) {
     var dataSetupOptions, defaultsEventsToTrack, end, error, eventCategory, eventLabel, eventsToTrack, fullscreen, loaded, parsedOptions, pause, percentsAlreadyTracked, percentsPlayedInterval, play, resize, seekEnd, seekStart, seeking, sendbeacon, timeupdate, volumeChange;
     if (options == null) {
       options = {};
     }
     dataSetupOptions = {};
-    if (this.options()["data-setup"]) {
-      parsedOptions = JSON.parse(this.options()["data-setup"]);
+    if (this.options_["data-setup"]) {
+      parsedOptions = JSON.parse(this.options_["data-setup"]);
       if (parsedOptions.ga) {
         dataSetupOptions = parsedOptions.ga;
       }
@@ -75,7 +75,7 @@
       var currentTime, duration;
       currentTime = Math.round(this.currentTime());
       duration = Math.round(this.duration());
-      if (currentTime !== duration && !seeking) {
+      if (currentTime !== duration && !seeking && duration !== Infinity) {
         sendbeacon('pause', false, currentTime);
       }
     };
