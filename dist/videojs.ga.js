@@ -66,11 +66,26 @@
       sendbeacon('end', true);
     };
     play = function() {
-      var currentTime;
-      currentTime = Math.round(this.currentTime());
-      sendbeacon('play', true, currentTime);
-      seeking = false;
-    };
+        var currentTime;
+        currentTime = Math.round(this.currentTime());
+        seeking = false;
+
+        if (this.ads) {
+
+          if (this.ads.isAdPlaying() || currentTime === 0) {
+
+            this.one(['adend', 'adskip', 'adserror', 'adscanceled'], function(e) {
+                this.play();
+                sendbeacon('play', true, currentTime);
+              });
+            } else {
+              sendbeacon('play', true, currentTime);
+            }
+
+          } else {
+            sendbeacon('play', true, currentTime);
+          }
+        };
     pause = function() {
       var currentTime, duration;
       currentTime = Math.round(this.currentTime());
